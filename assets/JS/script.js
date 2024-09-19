@@ -10,7 +10,7 @@ Valider.addEventListener("click", ()=>{
 var ctx = document.getElementById('myChart').getContext('2d');
 
 var myChart = new Chart(ctx, {
-    type: 'line',  
+    type: 'polarArea',  
     data: {
         labels: ['1','2','3','4','5','6'],  
         datasets: [{
@@ -39,7 +39,7 @@ var myChart = new Chart(ctx, {
                     callback: function(value, index, values) {
                         var maxValue = Math.max(...values.map(v => v.value));  
                         if (value === maxValue) {
-                            return 'Y'; 
+                            return ; 
                         }
                         return value;
                     }
