@@ -6,6 +6,21 @@
     <title>IS</title>
 </head>
 <body>
-    
+    <form id="valueForm">
+        <input type="number" id="generateur" placeholder="Valeur du générateur" required>
+        <input type="number" id="resistance" placeholder="Résistance" required>
+        <input type="number" id="inductance" placeholder="Inductance" required>
+        <input type="number" id="capacite" placeholder="Capacité" required>
+        <button id="valider" type="button">Valider</button>
+    </form>  
+
+    <div>
+        <canvas id="myChart" width="500" height="100" aria-label="Giraffy">
+            <p>Hello Fallback World</p>
+        </canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./assets/JS/script.js"></script>
 </body>
 </html>
