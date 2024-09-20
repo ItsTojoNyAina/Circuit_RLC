@@ -7,6 +7,8 @@
     <title>IS</title>
 </head>
 <body>
+    <h1>Similateur de circuit <span class="overlap"> <span>R</span><span>L</span><span>C</span></span> avec la methode</h1>
+   <div id="main">
     <form id="valueForm">
         <input type="number" id="generateur" placeholder="Valeur du générateur" required>
         <input type="number" id="resistance" placeholder="Résistance" required>
@@ -15,12 +17,13 @@
         <button id="valider" type="button">Valider</button>
     </form>  
 
-    <div>
+    <div class="chart"> 
         <canvas id="myChart" width="500" height="100" aria-label="Giraffy">
             <p>Hello Fallback World</p>
         </canvas>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   </div>
+    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
     <script src="./assets/JS/script.js"></script>
 </body>
 </html>
