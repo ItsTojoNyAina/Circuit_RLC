@@ -18,7 +18,8 @@ Valider.addEventListener("click", () => {
     chartContainer.style.boxShadow = '2px 2px 6px rgba(128, 128, 128, 0.235)';
     chartContainer.style.borderRadius = '6px';
     chartContainer.style.width = '400px';  
-    chartContainer.style.height = '400px';  
+    chartContainer.style.height = '400px'; 
+    chartContainer.style.borderRadius = '8px';  
 
     var ctx = document.getElementById('myChart').getContext('2d');
 
