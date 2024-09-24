@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RL Circuit Solver with Newton's Method</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="rlCircuitChart" width="600" height="400"></canvas>
+
+    <script>
+        // Paramètres du circuit RL
+        const R = 10;  // Résistance en ohms
+        const L = 5;   // Inductance en henrys
+        const dt = 0.01;  // Pas de temps en secondes
+        const T = 10;     // Durée totale de la simulation en secondes
+
+        // Fonction de la source de tension e(t)
+        function e(t) {
+            return 10 * Math.sin(2 * Math.PI * t);  // Exemple : tension sinusoïdale
+        }
+
+        // Algorithme de Newton pour résoudre l'équation RL
+        function newtonSolver(i_current, i_previous, e_current, R, L, dt) {
+            const tolerance = 1e-6;
+            let i_next = i_current;
+            let maxIter = 100;
+            
+            // Fonction à résoudre : f(i_next) = 0
+            function f(i_next) {
+                return R * i_next + L * (i_next - i_previous) / dt - e_current;
+            }
+            
+            // Dérivée de f(i_next) par rapport à i_next
+            function df(i_next) {
+                return R + L / dt;
+            }
+
+            // Algorithme de Newton
+            for (let iter = 0; iter < maxIter; iter++) {
+                let f_value = f(i_next);
+                let df_value = df(i_next);
+                let i_new = i_next - f_value / df_value;
+                if (Math.abs(i_new - i_next) < tolerance) {
+                    return i_new;
+                }
+                i_next = i_new;
+            }
+            return i_next;  // Retourner la solution trouvée
+        }
+
+        // Simulation du circuit RL
+        function simulateRLCircuit(R, L, dt, T) {
+            let time = [];
+            let current = [];
+
+            let i_previous = 0;  // Courant initial à t=0
+
+            for (let t = 0; t <= T; t += dt) {
+                let e_current = e(t);
+                let i_next = newtonSolver(i_previous, i_previous, e_current, R, L, dt);
+                
+                // Enregistrer les valeurs
+                time.push(t);
+                current.push(i_next);
+                
+                // Mettre à jour pour le prochain pas de temps
+                i_previous = i_next;
+            }
+
+            return { time, current };
+        }
+
+        // Exécuter la simulation
+        const { time, current } = simulateRLCircuit(R, L, dt, T);
+
+        // Visualisation avec Chart.js
+        const ctx = document.getElementById('rlCircuitChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: time,
+                datasets: [{
+                    label: 'Courant i(t)',
+                    data: current,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Temps (s)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Courant (A)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/CSS/style.css" />
+    <link rel="stylesheet" href="./assets/font awesome/all.min.css" />
+    <title>Simulateur de circuit RC avec la méthode de Newton</title>
+</head>
+<body>
+    <h1>
+      Simulateur de circuit RC (Charge d'un condensateur)
+    </h1>
+    <div id="main">
+        <form id="valueForm">
+            <label for="generateur">Tension du générateur (en V)</label>
+            <input type="number" id="generateur" placeholder="Tension générateur" required />
+
+            <label for="resistance">Résistance R (en Ohm)</label>
+            <input type="number" id="resistance" placeholder="Résistance R" required />
+
+            <label for="capacite">Capacité C (en Farads)</label>
+            <input type="number" id="capacite" placeholder="Capacité C" required />
+
+            <button id="valider" type="button">Valider</button>
+        </form>
+
+        <div class="chart">
+            <canvas id="myChart" width="500" height="300"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.getElementById("valider").addEventListener("click", () => {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Time labels
+                    datasets: [{
+                        label: 'Tension uC(t)',
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { title: { display: true, text: 'Temps (s)' }},
+                        y: { title: { display: true, text: 'Tension (V)' }}
+                    }
+                }
+            });
+
+            const E = parseFloat(document.getElementById("generateur").value);
+            const R = parseFloat(document.getElementById("resistance").value);
+            const C = parseFloat(document.getElementById("capacite").value);
+            const dt = 0.01; // Time step
+            const T = 5;     // Simulation duration (5 seconds)
+
+            function simulateAndAnimateRCCircuit(E, R, C, dt, T, chart) {
+                let time = 0;
+                let uC = 0; // Initial capacitor voltage (discharged)
+                const tau = R * C; // Time constant
+                const maxSteps = T / dt;
+
+                function animate() {
+                    if (time > T) {
+                        time = 0;
+                        chart.data.labels = [];
+                        chart.data.datasets[0].data = [];
+                    }
+
+                    // Exponential charging formula for a capacitor
+                    uC = E * (1 - Math.exp(-time / tau));
+
+                    chart.data.labels.push(time.toFixed(2));
+                    chart.data.datasets[0].data.push(uC);
+
+                    if (chart.data.labels.length > maxSteps) {
+                        chart.data.labels.shift();
+                        chart.data.datasets[0].data.shift();
+                    }
+
+                    chart.update();
+
+                    time += dt;
+
+                    setTimeout(animate, 50);
+                }
+
+                animate();
+            }
+
+            simulateAndAnimateRCCircuit(E, R, C, dt, T, chart);
+        });
+    </script>
+</body>
+</html>
