@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/CSS/style.css" />
+    <link rel="stylesheet" href="./assets/font awesome/all.min.css" />
+    <title>Simulateur de circuit RLC</title>
+</head>
+<body>
+    <h1>
+        Simulateur de circuit RLC (Oscillations dans un circuit RLC)
+    </h1>
+    <div id="main">
+        <form id="valueForm">
+            <label for="generateur">Tension du générateur (en V)</label>
+            <input type="number" id="generateur" placeholder="Tension générateur" required />
+
+            <label for="resistance">Résistance R (en Ohm)</label>
+            <input type="number" id="resistance" placeholder="Résistance R" required />
+
+            <label for="inductance">Inductance L (en Henrys)</label>
+            <input type="number" id="inductance" placeholder="Inductance L" required />
+
+            <label for="capacite">Capacité C (en Farads)</label>
+            <input type="number" id="capacite" placeholder="Capacité C" required />
+
+            <button id="valider" type="button">Valider</button>
+        </form>
+
+        <div class="chart">
+            <canvas id="myChart" width="500" height="300"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.getElementById("valider").addEventListener("click", () => {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Time labels
+                    datasets: [{
+                        label: 'Courant i(t)',
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { title: { display: true, text: 'Temps (s)' }},
+                        y: { title: { display: true, text: 'Courant (A)' }}
+                    }
+                }
+            });
+
+            const E = parseFloat(document.getElementById("generateur").value);
+            const R = parseFloat(document.getElementById("resistance").value);
+            const L = parseFloat(document.getElementById("inductance").value);
+            const C = parseFloat(document.getElementById("capacite").value);
+            const dt = 0.01; // Time step
+            const T = 5;     // Simulation duration (5 seconds)
+
+            function simulateAndAnimateRLCCircuit(E, R, L, C, dt, T, chart) {
+                let time = 0;
+                let i = 0; // Initial current
+                let uC = 0; // Initial capacitor voltage
+                let di = 0; // Initial current derivative
+                const maxSteps = T / dt;
+
+                function animate() {
+                    if (time > T) {
+                        time = 0;
+                        chart.data.labels = [];
+                        chart.data.datasets[0].data = [];
+                    }
+
+                    // Equation of the RLC circuit: L * (di/dt) + R * i + uC = E
+                    // Use the capacitor's relation: duC/dt = i / C
+                    di = (E - R * i - uC) / L; // From the circuit equation
+                    uC += (i / C) * dt; // Capacitor voltage change
+                    i += di * dt; // Update current with Euler method
+
+                    chart.data.labels.push(time.toFixed(2));
+                    chart.data.datasets[0].data.push(i);
+
+                    if (chart.data.labels.length > maxSteps) {
+                        chart.data.labels.shift();
+                        chart.data.datasets[0].data.shift();
+                    }
+
+                    chart.update();
+
+                    time += dt;
+
+                    setTimeout(animate, 50);
+                }
+
+                animate();
+            }
+
+            simulateAndAnimateRLCCircuit(E, R, L, C, dt, T, chart);
+        });
+    </script>
+</body>
+</html>
