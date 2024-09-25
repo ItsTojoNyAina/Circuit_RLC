@@ -1,129 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="assets/CSS/style.css" />
     <link rel="stylesheet" href="./assets/font awesome/all.min.css" />
     <title>Simulateur de circuit RL avec la méthode de Newton</title>
-</head>
-<body>
-    <h1>
-      Simulateur de circuit RL (Série-Parallèle)
-    </h1>
+  </head>
+  <body>
+    <h1>Simulateur de circuit RL (Série-Parallèle)</h1>
     <div id="main">
-        <form id="valueForm">
-            <label for="generateur">Tension du générateur (en V)</label>
-            <input type="number" id="generateur" placeholder="Tension générateur" required />
+      <form id="valueForm">
+        <label for="generateur">Tension du générateur (en V)</label>
+        <input
+          type="number"
+          id="generateur"
+          placeholder="Tension générateur"
+          required
+        />
 
-            <label for="resistance1">Résistance r (en Ohm)</label>
-            <input type="number" id="resistance1" placeholder="Résistance r" required />
+        <label for="resistance1">Résistance r (en Ohm)</label>
+        <input
+          type="number"
+          id="resistance1"
+          placeholder="Résistance r"
+          required
+        />
 
-            <label for="resistance2">Résistance R (en Ohm)</label>
-            <input type="number" id="resistance2" placeholder="Résistance R" required />
+        <label for="resistance2">Résistance R (en Ohm)</label>
+        <input
+          type="number"
+          id="resistance2"
+          placeholder="Résistance R"
+          required
+        />
 
-            <label for="inductance">Inductance L (en Henry)</label>
-            <input type="number" id="inductance" placeholder="Inductance" required />
+        <label for="inductance">Inductance L (en Henry)</label>
+        <input
+          type="number"
+          id="inductance"
+          placeholder="Inductance"
+          required
+        />
 
-            <button id="valider" type="button">Valider</button>
-        </form>
+        <button id="valider" type="button">Valider</button>
+      </form>
 
-        <div class="chart">
-            <canvas id="myChart" width="500" height="300"></canvas>
-        </div>
+      <div class="chart">
+        <canvas id="myChart" width="500" height="300"></canvas>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.getElementById("valider").addEventListener("click", () => {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [], // Time labels
-                    datasets: [{
-                        label: 'Courant iL(t)',
-                        data: [],
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: { title: { display: true, text: 'Temps (s)' }},
-                        y: { title: { display: true, text: 'Courant (A)' }}
-                    }
-                }
-            });
-
-            const E = parseFloat(document.getElementById("generateur").value);
-            const r = parseFloat(document.getElementById("resistance1").value);
-            const R = parseFloat(document.getElementById("resistance2").value);
-            const L = parseFloat(document.getElementById("inductance").value);
-            const dt = 0.01; // Time step
-            const T = 5;     // Simulation duration (5 seconds)
-
-            function newtonSolver(iL_current, iL_previous, E, r, R, L, dt) {
-                const tolerance = 1e-6;
-                let iL_next = iL_current;
-                let maxIter = 100;
-
-                function f(iL_next) {
-                    return E - (r * (iL_next + (iL_next - iL_previous) / dt)) - iL_next * (R + L / dt);
-                }
-
-                function df(iL_next) {
-                    return -r - (R + L / dt);
-                }
-
-                for (let iter = 0; iter < maxIter; iter++) {
-                    let f_value = f(iL_next);
-                    let df_value = df(iL_next);
-                    let i_new = iL_next - f_value / df_value;
-                    if (Math.abs(i_new - iL_next) < tolerance) {
-                        return i_new;
-                    }
-                    iL_next = i_new;
-                }
-                return iL_next; 
-            }
-
-            function simulateAndAnimateRLCircuit(E, r, R, L, dt, T, chart) {
-                let time = 0;
-                let iL_previous = 0;
-                const maxSteps = T / dt;
-
-                function animate() {
-                    if (time > T) {
-                        time = 0;
-                        chart.data.labels = [];
-                        chart.data.datasets[0].data = [];
-                    }
-
-                    let iL_next = newtonSolver(iL_previous, iL_previous, E, r, R, L, dt);
-
-                    chart.data.labels.push(time.toFixed(2));
-                    chart.data.datasets[0].data.push(iL_next);
-
-                    if (chart.data.labels.length > maxSteps) {
-                        chart.data.labels.shift();
-                        chart.data.datasets[0].data.shift();
-                    }
-
-                    chart.update();
-
-                    iL_previous = iL_next;
-                    time += dt;
-
-                    setTimeout(animate, 50);
-                }
-
-                animate();
-            }
-
-            simulateAndAnimateRLCircuit(E, r, R, L, dt, T, chart);
+      document.getElementById("valider").addEventListener("click", () => {
+        const ctx = document.getElementById("myChart").getContext("2d");
+        const chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [], // Time labels
+            datasets: [
+              {
+                label: "Courant iL(t)",
+                data: [],
+                borderColor: "rgba(75, 192, 192, 1)",
+                fill: false,
+                tension: 0.1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              x: { title: { display: true, text: "Temps (s)" } },
+              y: { title: { display: true, text: "Courant (A)" } },
+            },
+          },
         });
+
+        const E = parseFloat(document.getElementById("generateur").value);
+        const r = parseFloat(document.getElementById("resistance1").value);
+        const R = parseFloat(document.getElementById("resistance2").value);
+        const L = parseFloat(document.getElementById("inductance").value);
+        const dt = 0.01; // Time step
+        const T = 5; // Simulation duration (5 seconds)
+
+        function newtonSolver(iL_current, iL_previous, E, r, R, L, dt) {
+          const tolerance = 1e-6;
+          let iL_next = iL_current;
+          let maxIter = 100;
+
+          function f(iL_next) {
+            return (
+              E -
+              r * (iL_next + (iL_next - iL_previous) / dt) -
+              iL_next * (R + L / dt)
+            );
+          }
+
+          function df(iL_next) {
+            return -r - (R + L / dt);
+          }
+
+          for (let iter = 0; iter < maxIter; iter++) {
+            let f_value = f(iL_next);
+            let df_value = df(iL_next);
+            let i_new = iL_next - f_value / df_value;
+            if (Math.abs(i_new - iL_next) < tolerance) {
+              return i_new;
+            }
+            iL_next = i_new;
+          }
+          return iL_next;
+        }
+
+        function simulateAndAnimateRLCircuit(E, r, R, L, dt, T, chart) {
+          let time = 0;
+          let iL_previous = 0;
+          const maxSteps = T / dt;
+
+          function animate() {
+            if (time > T) {
+              time = 0;
+              chart.data.labels = [];
+              chart.data.datasets[0].data = [];
+            }
+
+            let iL_next = newtonSolver(
+              iL_previous,
+              iL_previous,
+              E,
+              r,
+              R,
+              L,
+              dt
+            );
+
+            chart.data.labels.push(time.toFixed(2));
+            chart.data.datasets[0].data.push(iL_next);
+
+            if (chart.data.labels.length > maxSteps) {
+              chart.data.labels.shift();
+              chart.data.datasets[0].data.shift();
+            }
+
+            chart.update();
+
+            iL_previous = iL_next;
+            time += dt;
+
+            setTimeout(animate, 50);
+          }
+
+          animate();
+        }
+
+        simulateAndAnimateRLCircuit(E, r, R, L, dt, T, chart);
+      });
     </script>
-</body>
+    <footer>
+      <div class="row primary">
+        <div class="column about">
+          <h3>Description</h3>
+          <p>
+            Un projet logiciel qui illustre une base électrinique tout en
+            restant centré sur le développement logiciel pourrait être un
+            similateur de circuit électronique avec la méthode de Newton pour la
+            résolution des équations différentielles qui régissent le
+            comportement des composants électronique (résistance, condensateur,
+            bobine)
+          </p>
+        </div>
+
+        <div class="column subscribe">
+          <h3>Remarque</h3>
+          <div>
+            <input type="email" placeholder="votre email" />
+            <button>envoyer</button>
+          </div>
+          <div class="social">
+            <i class="fa-brands fa-facebook-square"></i>
+            <i class="fa-brands fa-instagram-square"></i>
+            <i class="fa-brands fa-twitter-square"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row secondary">
+        <div>
+          <p>
+            <i class="fas fa-phone-alt"></i>
+          </p>
+          <p>+261 123456789</p>
+        </div>
+        <div>
+          <p><i class="fas fa-envelope"></i></p>
+          <p>BoTech.com</p>
+        </div>
+        <div>
+          <p><i class="fas fa-map-marker-alt"></i></p>
+          <p>Antananarivo</p>
+        </div>
+      </div>
+      <div class="row copyright">
+        <p>Copyright &copy; 2024 | BoTech</p>
+      </div>
+    </footer>
+  </body>
 </html>
