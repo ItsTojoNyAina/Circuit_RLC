@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/CSS/style.css" />
-    <link rel="stylesheet" href="./assets/font awesome/all.min.css" />
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../font awesome/all.min.css" />
     <title>Simulateur RL</title>
   </head>
   <body>
-    <h1>Simulateur de circuit RL avec la méthode de Newton</h1>
+    <h1>Simulateur de circuit <span class="overlap"> <span>R</span><span>L</span></span> avec la méthode de Newton</h1>
     <div id="main">
       <form id="valueForm">
         <label for="generateur">Courant initial (en A)</label>
@@ -39,6 +39,7 @@
       </form>
 
       <div class="chart">
+        <img src="../IMG/circuit_RL.jpg" width="40%">
         <canvas id="myChart" width="500" height="300"></canvas>
       </div>
     </div>

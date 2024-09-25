@@ -8,93 +8,94 @@
     <title>IS</title>
   </head>
   <body>
-    <h1>
-      Similateur de circuit
-      <span class="overlap"> <span>R</span><span>L</span><span>C</span></span>
-      avec la methode de Newton
-    </h1>
-    <div id="main">
-      <form id="valueForm">
-        <label for="generateur">Courant (en A)</label>
-        <input
-          type="number"
-          id="generateur"
-          placeholder="Valeur du générateur"
-          required
-        />
-        <label for="resistance">Résistance (en Ohm)</label>
-        <input
-          type="number"
-          id="resistance"
-          placeholder="Résistance"
-          required
-        />
-        <label for="inductance">Bobine (en Henri)</label>
-        <input
-          type="number"
-          id="inductance"
-          placeholder="Inductance"
-          required
-        />
-        <label for="capacite">Condensateur (en F)</label>
-        <input type="number" id="capacite" placeholder="Capacité" required />
-        <button id="valider" type="button">Valider</button>
-      </form>
-
-      <div class="chart">
-        <canvas id="myChart" width="500" height="100" aria-label="Giraffy">
-          <p>Hello Fallback World</p>
-        </canvas>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Choix du Rôle</title>
+      <link rel="stylesheet" href="CSS/all.min.css">
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+        .container {
+          width: 90%;
+          max-width: 1200px;
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+          text-align: center;
+        }
+        .role-box {
+          flex: 1;
+          min-width: 250px;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .role-box:hover {
+          transform: scale(1.05);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .role-box a {
+          display: block;
+          color: #007bff;
+          text-decoration: none;
+          font-size: 18px;
+          margin-top: 10px;
+          font-weight: bold;
+        }
+        .role-box a:hover {
+          text-decoration: underline;
+        }
+        .title {
+          font-size: 24px;
+          margin-bottom: 20px;
+          width: 100%;
+          color: 	#FFA500;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="role-box">
+          <h2 class="title">Circuit RLC</h2>
+          <img src="./assets/IMG/exo_rlc.jpg" width="30%">
+          <p>Simulateur de circuit RLC(Oscillations dans un circuit RLC)</p>
+          <a href="./assets/Other Pages/CircuitRLC.html">Voir</a>
+        </div>
+        <div class="role-box">
+          <h2 class="title">Circuit RC</h2>
+          <img src="./assets/IMG/elec_circuitRC01.png" width="30%">
+          <p>Simulateur de circuit RC(Charge d'un condensateur)</p>
+          <a href="./assets/Other Pages/CircuitRC.html">Voir</a>
+        </div>
+        <div class="role-box">
+          <h2 class="title">Circuit RL</h2>
+          <img src="./assets/IMG/circuit_RL.jpg" width="30%">
+          <p>Simulateur de circuit RL avec la méthode de Newton</p>
+          <a href="./assets/Other Pages/CircuitRL.html">Voir</a>
+        </div>
+        <div class="role-box">
+          <h2 class="title">Circuit RL en Derivation</h2>
+          <img src="./assets/IMG/circuit_RLC_P.jpg" width="30%">
+          <p>Simulateur de circuit RL (Série-Parallèle)</p>
+          <a href="./assets/Other Pages/CicuitRLDerivate.html">Voir</a>
+        </div>
       </div>
-    </div>
-    <footer>
-      <div class="row primary">
-        <div class="column about">
-          <h3>Description</h3>
-          <p>
-            Un projet logiciel qui illustre une base électrinique tout en
-            restant centré sur le développement logiciel pourrait être un
-            similateur de circuit électronique avec la méthode de Newton pour la
-            résolution des équations différentielles qui régissent le
-            comportement des composants électronique (résistance, condensateur,
-            bobine)
-          </p>
-        </div>
-
-        <div class="column subscribe">
-          <h3>Remarque</h3>
-          <div>
-            <input type="email" placeholder="votre email" />
-            <button>envoyer</button>
-          </div>
-          <div class="social">
-            <i class="fa-brands fa-facebook-square"></i>
-            <i class="fa-brands fa-instagram-square"></i>
-            <i class="fa-brands fa-twitter-square"></i>
-          </div>
-        </div>
-      </div>
-      <div class="row secondary">
-        <div>
-          <p>
-            <i class="fas fa-phone-alt"></i>
-          </p>
-          <p>+261 123456789</p>
-        </div>
-        <div>
-          <p><i class="fas fa-envelope"></i></p>
-          <p>BoTech.com</p>
-        </div>
-        <div>
-          <p><i class="fas fa-map-marker-alt"></i></p>
-          <p>Antananarivo</p>
-        </div>
-      </div>
-      <div class="row copyright">
-        <p>Copyright &copy; 2024 | BoTech</p>
-      </div>
-    </footer>
-    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
-    <script src="./assets/JS/script.js"></script>
+    </body>
+    </html>
+    
   </body>
 </html>

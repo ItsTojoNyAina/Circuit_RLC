@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/CSS/style.css" />
-    <link rel="stylesheet" href="./assets/font awesome/all.min.css" />
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../font awesome/all.min.css" />
     <title>Simulateur de circuit RLC</title>
 </head>
 <body>
     <h1>
-        Simulateur de circuit RLC (Oscillations dans un circuit RLC)
+        Simulateur de circuit <span class="overlap"> <span>R</span><span>L</span><span>C</span></span>(Oscillations dans un circuit RLC)
     </h1>
     <div id="main">
         <form id="valueForm">
@@ -29,6 +29,7 @@
         </form>
 
         <div class="chart">
+            <img src="../IMG/exo_rlc.jpg" width="30%">
             <canvas id="myChart" width="500" height="300"></canvas>
         </div>
     </div>
@@ -105,5 +106,52 @@
             simulateAndAnimateRLCCircuit(E, R, L, C, dt, T, chart);
         });
     </script>
+        <footer>
+            <div class="row primary">
+              <div class="column about">
+                <h3>Description</h3>
+                <p>
+                  Un projet logiciel qui illustre une base électrinique tout en
+                  restant centré sur le développement logiciel pourrait être un
+                  similateur de circuit électronique avec la méthode de Newton pour la
+                  résolution des équations différentielles qui régissent le
+                  comportement des composants électronique (résistance, condensateur,
+                  bobine)
+                </p>
+              </div>
+      
+              <div class="column subscribe">
+                <h3>Remarque</h3>
+                <div>
+                  <input type="email" placeholder="votre email" />
+                  <button>envoyer</button>
+                </div>
+                <div class="social">
+                  <i class="fa-brands fa-facebook-square"></i>
+                  <i class="fa-brands fa-instagram-square"></i>
+                  <i class="fa-brands fa-twitter-square"></i>
+                </div>
+              </div>
+            </div>
+            <div class="row secondary">
+              <div>
+                <p>
+                  <i class="fas fa-phone-alt"></i>
+                </p>
+                <p>+261 123456789</p>
+              </div>
+              <div>
+                <p><i class="fas fa-envelope"></i></p>
+                <p>BoTech.com</p>
+              </div>
+              <div>
+                <p><i class="fas fa-map-marker-alt"></i></p>
+                <p>Antananarivo</p>
+              </div>
+            </div>
+            <div class="row copyright">
+              <p>Copyright &copy; 2024 | BoTech</p>
+            </div>
+          </footer>
 </body>
 </html>
